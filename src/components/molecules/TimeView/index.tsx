@@ -37,7 +37,7 @@ const TimeView = ({ phases, lang }: { phases: LangType; lang: Locale }) => {
           </span>
           <Tick />
         </div>
-        <div className="relative text-6xl font-bold">
+        <div className="relative text-5xl font-bold sm:text-6xl">
           {days > 0 && <span>{days}d - </span>}
           <span>{formatNumber(hours)}</span>:
           <span>{formatNumber(minutes)}</span>:
@@ -51,7 +51,7 @@ const TimeView = ({ phases, lang }: { phases: LangType; lang: Locale }) => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7, duration: 0.3 }}
-        className="z-10 text-xl"
+        className="z-10 text-center text-lg sm:text-xl"
       >
         {phases.timeSince} {event.name} - {formatNumber(day)}/
         {formatNumber(month)}/{formatNumber(year)}

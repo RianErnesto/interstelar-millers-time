@@ -22,7 +22,7 @@ const EventSelector = ({ phrases }: { phrases: LangType }) => {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.6, duration: 0.6 }}
-      className="flex w-1/3 gap-2"
+      className="flex w-1/3 min-w-fit gap-2"
     >
       <Button onClick={resetEvent}>Reset</Button>
       <Select
@@ -32,7 +32,7 @@ const EventSelector = ({ phrases }: { phrases: LangType }) => {
         <SelectTrigger>
           <SelectValue placeholder={phrases.selectEvent} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="max-sm:max-w-[20rem]">
           {events[lang].map((event, index) => (
             <SelectItem key={index} value={event.name}>
               {event.name} - {formatNumber(getSplittedDate(event.date).day)}/

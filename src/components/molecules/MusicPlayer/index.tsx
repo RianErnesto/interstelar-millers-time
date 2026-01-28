@@ -32,9 +32,9 @@ const MusicPlayer = ({ phrases }: { phrases: LangType }) => {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 1.1, duration: 0.6 }}
-      className="flex w-fit flex-col items-center justify-center gap-3"
+      className="flex w-full max-w-96 flex-col items-center justify-center gap-3"
     >
-      <div className="flex items-center gap-4">
+      <div className="flex w-full items-center gap-4">
         <span className="flex h-20 w-20 flex-1 items-center justify-center rounded-md bg-gray-600">
           <IoPlanet size={32} />
         </span>

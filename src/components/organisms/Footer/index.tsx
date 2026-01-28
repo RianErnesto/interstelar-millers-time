@@ -12,7 +12,7 @@ const Footer = ({ phrases }: { phrases: LangType }) => {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 1.4, duration: 0.6 }}
-      className="flex flex-1 flex-col gap-4"
+      className="flex w-full min-w-[13.625rem] max-w-96 flex-1 flex-col gap-4"
     >
       <LanguageSelector phrases={phrases} />
       <Donations phrases={phrases} />
