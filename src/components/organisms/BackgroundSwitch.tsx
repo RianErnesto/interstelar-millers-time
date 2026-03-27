@@ -28,8 +28,14 @@ const BackgroundSwitch = () => {
         <motion.div
           key={bg.alt}
           initial={{ opacity: 0 }}
-          animate={{ opacity: currentIndex === index ? 1 : 0 }}
-          transition={{ duration: 1 }}
+          animate={{
+            opacity: currentIndex === index ? 1 : 0,
+            scale: currentIndex === index ? 1.08 : 1,
+          }}
+          transition={{
+            opacity: { duration: 1.5 },
+            scale: { duration: 20, ease: 'linear' },
+          }}
           className={cn(
             'absolute inset-0 h-screen',
             currentIndex !== index && 'invisible',
@@ -41,6 +47,7 @@ const BackgroundSwitch = () => {
             fill
             priority={index === 0}
             quality={100}
+            style={{ objectFit: 'cover' }}
           />
         </motion.div>
       ))}
