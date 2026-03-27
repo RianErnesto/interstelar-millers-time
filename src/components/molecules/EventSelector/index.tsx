@@ -7,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/atoms/Select'
-import { events } from '@/constants/events'
 import { getSplittedDate, formatNumber } from '@/services/utils/patterns'
 import { useEvent } from '@/contexts/Event'
 import { LangType } from '@/types/lang'
@@ -15,7 +14,7 @@ import Button from '@/components/atoms/Button'
 import { motion } from 'framer-motion'
 
 const EventSelector = ({ phrases }: { phrases: LangType }) => {
-  const { changeEvent, event, lang, resetEvent } = useEvent()
+  const { changeEvent, event, availableEvents, resetEvent } = useEvent()
 
   return (
     <motion.div
@@ -24,7 +23,7 @@ const EventSelector = ({ phrases }: { phrases: LangType }) => {
       transition={{ delay: 0.6, duration: 0.6 }}
       className="flex w-1/3 min-w-fit gap-2"
     >
-      <Button onClick={resetEvent}>Reset</Button>
+      <Button onClick={resetEvent}>{phrases.resetButton}</Button>
       <Select
         value={event.name}
         onValueChange={(value: string) => changeEvent(value)}
@@ -33,13 +32,15 @@ const EventSelector = ({ phrases }: { phrases: LangType }) => {
           <SelectValue placeholder={phrases.selectEvent} />
         </SelectTrigger>
         <SelectContent className="max-sm:max-w-[20rem]">
-          {events[lang].map((event, index) => (
-            <SelectItem key={index} value={event.name}>
-              {event.name} - {formatNumber(getSplittedDate(event.date).day)}/
-              {formatNumber(getSplittedDate(event.date).month)}/
-              {formatNumber(getSplittedDate(event.date).year)}
-            </SelectItem>
-          ))}
+          {availableEvents.map((evt, index) => {
+            const { day, month, year } = getSplittedDate(evt.date)
+            return (
+              <SelectItem key={index} value={evt.name}>
+                {evt.name} - {formatNumber(day)}/{formatNumber(month)}/
+                {formatNumber(year)}
+              </SelectItem>
+            )
+          })}
         </SelectContent>
       </Select>
     </motion.div>

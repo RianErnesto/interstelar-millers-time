@@ -1,42 +1,49 @@
-import { GetDateDifferenceInDays } from './date'
+import { getDateDifferenceInDays } from './date'
 
-type GetTimeSinceReturnType = {
+export type MillerTime = {
   days: number
   hours: number
   minutes: number
   seconds: number
 }
 
-type SplittedDateType = {
+export type SplittedDate = {
   day: number
   month: number
   year: number
 }
 
-export const getTimeSince = (date: Date): GetTimeSinceReturnType => {
-  // 1 day on Earth is equal to 1.25 seconds on Miller
-  const days = GetDateDifferenceInDays(new Date(), date)
-  const secondsInMiller = (days * 1.25) % 60
-  const minutesInMiller = ((days * 1.25) / 60) % 60
-  const hoursInMiller = ((days * 1.25) / 60 / 60) % 24
-  const daysInMiller = ((days * 1.25) / 60 / 60 / 24) % 365
+const MILLER_SECONDS_PER_EARTH_DAY = 1.25
+const SECONDS_PER_MINUTE = 60
+const MINUTES_PER_HOUR = 60
+const HOURS_PER_DAY = 24
 
-  return {
-    days: Math.floor(daysInMiller),
-    hours: Math.floor(hoursInMiller),
-    minutes: Math.floor(minutesInMiller),
-    seconds: Math.floor(secondsInMiller),
-  }
+export const getTimeSince = (date: Date): MillerTime => {
+  const earthDays = getDateDifferenceInDays(new Date(), date)
+  const totalMillerSeconds = earthDays * MILLER_SECONDS_PER_EARTH_DAY
+
+  const seconds = Math.floor(totalMillerSeconds % SECONDS_PER_MINUTE)
+  const minutes = Math.floor(
+    (totalMillerSeconds / SECONDS_PER_MINUTE) % MINUTES_PER_HOUR,
+  )
+  const hours = Math.floor(
+    (totalMillerSeconds / (SECONDS_PER_MINUTE * MINUTES_PER_HOUR)) %
+      HOURS_PER_DAY,
+  )
+  const days = Math.floor(
+    totalMillerSeconds /
+      (SECONDS_PER_MINUTE * MINUTES_PER_HOUR * HOURS_PER_DAY),
+  )
+
+  return { days, hours, minutes, seconds }
 }
 
-export const getSplittedDate = (date: Date): SplittedDateType => {
-  return {
-    day: date.getDate(),
-    month: date.getMonth() + 1,
-    year: date.getFullYear(),
-  }
-}
+export const getSplittedDate = (date: Date): SplittedDate => ({
+  day: date.getDate(),
+  month: date.getMonth() + 1,
+  year: date.getFullYear(),
+})
 
-export const formatNumber = (number: number): string => {
-  return number < 10 ? `0${number}` : `${number}`
+export const formatNumber = (value: number): string => {
+  return value < 10 ? `0${value}` : `${value}`
 }

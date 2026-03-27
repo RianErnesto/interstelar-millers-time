@@ -63,7 +63,7 @@ export const musics: MusicType[] = [
   {
     name: "I'm going Home",
     author: 'Hans Zimmer',
-    path: '/audio/Interstellar_Im_Going_Home_12',
+    path: '/audio/Interstellar_Im_Going_Home_12.mp3',
   },
   {
     name: 'Coward',

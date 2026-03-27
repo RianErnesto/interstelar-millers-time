@@ -1,12 +1,12 @@
 'use client'
 
 import {
-  Dispatch,
   ReactNode,
-  SetStateAction,
   createContext,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
 import { events, EventType } from '@/constants/events'
@@ -14,52 +14,57 @@ import { Locale } from '@/app/[lang]/i18n'
 
 type EventContextType = {
   event: EventType
-  setEvent: Dispatch<SetStateAction<EventType>>
+  availableEvents: EventType[]
+  lang: Locale
   resetEvent: () => void
   changeEvent: (name: string) => void
-  setLang: Dispatch<SetStateAction<'en' | 'pt'>>
-  lang: Locale
+  setLang: (lang: Locale) => void
 }
 
-const EventContext = createContext<EventContextType>({} as EventContextType)
+const EventContext = createContext<EventContextType | null>(null)
 
 export const EventProvider = ({ children }: { children: ReactNode }) => {
+  const [lang, setLang] = useState<Locale>('en')
   const [event, setEvent] = useState<EventType>(events.en[0])
-  const [lang, setLang] = useState<Locale>('en' as Locale)
 
-  const resetEvent = () => setEvent(events[lang][0])
+  const resetEvent = useCallback(() => {
+    setEvent(events[lang][0])
+  }, [lang])
 
-  const changeEvent = (name: string) => {
-    const newEvent = events[lang].find((event) => event.name === name)
-    if (newEvent) setEvent(newEvent)
-  }
-
-  const value = {
-    event,
-    setEvent,
-    resetEvent,
-    changeEvent,
-    setLang,
-    lang,
-  }
+  const changeEvent = useCallback(
+    (name: string) => {
+      const found = events[lang].find((e) => e.name === name)
+      if (found) setEvent(found)
+    },
+    [lang],
+  )
 
   useEffect(() => {
     resetEvent()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang])
+  }, [resetEvent])
+
+  const availableEvents = useMemo(() => events[lang], [lang])
+
+  const value = useMemo(
+    () => ({ event, availableEvents, lang, resetEvent, changeEvent, setLang }),
+    [event, availableEvents, lang, resetEvent, changeEvent],
+  )
 
   return <EventContext.Provider value={value}>{children}</EventContext.Provider>
 }
 
-export const useEvent = (lang?: Locale) => {
-  const context = useContext<EventContextType>(EventContext)
+export const useEvent = (initialLang?: Locale) => {
+  const context = useContext(EventContext)
 
-  if (context === undefined)
-    throw new Error('useEvent must be used within a EventProvider')
-
-  if (lang) {
-    context.setLang(() => lang)
+  if (!context) {
+    throw new Error('useEvent must be used within an EventProvider')
   }
+
+  useEffect(() => {
+    if (initialLang) {
+      context.setLang(initialLang)
+    }
+  }, [initialLang, context])
 
   return context
 }

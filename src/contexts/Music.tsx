@@ -1,31 +1,32 @@
 'use client'
 
-import { createContext, useContext, useRef, useState } from 'react'
+import { createContext, useCallback, useContext, useRef, useState } from 'react'
 import { musics, MusicType } from '@/constants/music'
 
 interface MusicContextProps {
   playing: boolean
   random: boolean
   repeat: boolean
+  music: MusicType
   changeMusicStatus: () => void
   setRandom: (value: boolean) => void
   setRepeat: (value: boolean) => void
   nextMusic: () => void
   previousMusic: () => void
-  music: MusicType
 }
 
-const MusicContext = createContext<MusicContextProps>({} as MusicContextProps)
+const MusicContext = createContext<MusicContextProps | null>(null)
 
 export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentMusic, setCurrentMusic] = useState<MusicType>(musics[0])
   const [musicIndex, setMusicIndex] = useState(0)
-  const [playing, setPlaying] = useState<boolean>(false)
-  const [random, setRandom] = useState<boolean>(false)
-  const [repeat, setRepeat] = useState<boolean>(false)
+  const [playing, setPlaying] = useState(false)
+  const [random, setRandom] = useState(false)
+  const [repeat, setRepeat] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
 
-  const changeMusicStatus = () => {
+  const music = musics[musicIndex]
+
+  const changeMusicStatus = useCallback(() => {
     if (audioRef.current) {
       if (playing) {
         audioRef.current.pause()
@@ -34,40 +35,33 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
     setPlaying((prev) => !prev)
-  }
+  }, [playing])
 
-  const nextMusic = () => {
-    if (!repeat && musicIndex === musics.length - 1 && !random) return
+  const getRandomIndex = useCallback(() => {
+    return Math.floor(Math.random() * musics.length)
+  }, [])
+
+  const nextMusic = useCallback(() => {
     if (random) {
-      const randomIndex = Math.floor(Math.random() * musics.length)
-      setMusicIndex(randomIndex)
-      setCurrentMusic(musics[randomIndex])
+      setMusicIndex(getRandomIndex())
       return
     }
-    if (musicIndex + 1 < musics.length) {
-      setMusicIndex((prev) => prev + 1)
-      setCurrentMusic(musics[musicIndex + 1])
-    } else {
-      setMusicIndex(0)
-      setCurrentMusic(musics[0])
-    }
-  }
+    setMusicIndex((prev) => {
+      if (prev + 1 < musics.length) return prev + 1
+      return repeat ? 0 : prev
+    })
+  }, [random, repeat, getRandomIndex])
 
-  const previousMusic = () => {
+  const previousMusic = useCallback(() => {
     if (random) {
-      const randomIndex = Math.floor(Math.random() * musics.length)
-      setMusicIndex(randomIndex)
-      setCurrentMusic(musics[randomIndex])
+      setMusicIndex(getRandomIndex())
       return
     }
-    if (musicIndex - 1 >= 0) {
-      setMusicIndex((prev) => prev - 1)
-      setCurrentMusic(musics[musicIndex - 1])
-    } else {
-      setMusicIndex(musics.length - 1)
-      setCurrentMusic(musics[musics.length - 1])
-    }
-  }
+    setMusicIndex((prev) => {
+      if (prev - 1 >= 0) return prev - 1
+      return musics.length - 1
+    })
+  }, [random, getRandomIndex])
 
   return (
     <MusicContext.Provider
@@ -75,12 +69,12 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
         playing,
         random,
         repeat,
+        music,
         changeMusicStatus,
         setRandom,
         setRepeat,
         nextMusic,
         previousMusic,
-        music: currentMusic,
       }}
     >
       <audio
@@ -88,15 +82,19 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
         autoPlay={playing}
         key={musicIndex}
         ref={audioRef}
-        controls
         className="hidden"
-        style={{ display: 'none' }}
       >
-        <source src={currentMusic.path} type="audio/mpeg" />
+        <source src={music.path} type="audio/mpeg" />
       </audio>
       {children}
     </MusicContext.Provider>
   )
 }
 
-export const useMusic = () => useContext(MusicContext)
+export const useMusic = () => {
+  const context = useContext(MusicContext)
+  if (!context) {
+    throw new Error('useMusic must be used within a MusicProvider')
+  }
+  return context
+}

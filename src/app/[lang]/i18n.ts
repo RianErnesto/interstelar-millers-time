@@ -7,4 +7,15 @@ const dictionaries = {
 
 export type Locale = keyof typeof dictionaries
 
-export const getDictionary = async (locale: Locale) => dictionaries[locale]()
+const locales = Object.keys(dictionaries) as Locale[]
+
+export const isValidLocale = (value: string): value is Locale =>
+  locales.includes(value as Locale)
+
+export const sanitizeLocale = (value: string): Locale =>
+  isValidLocale(value) ? value : 'en'
+
+export const getDictionary = async (locale: Locale) => {
+  const loader = dictionaries[locale] ?? dictionaries.en
+  return loader()
+}
