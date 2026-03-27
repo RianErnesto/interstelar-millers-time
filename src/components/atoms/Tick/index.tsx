@@ -1,30 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { IoPlanet } from 'react-icons/io5'
+import Info from '@/components/atoms/Info'
 
-const Tick = () => {
-  const [opacity, setOpacity] = useState(0)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setOpacity((prevOpacity) => {
-        if (prevOpacity === 1) {
-          return 0
-        }
-        return 1
-      })
-    }, 1250)
-
-    return () => clearInterval(interval)
-  }, [])
-
+const Tick = ({ tooltip }: { tooltip?: string }) => {
   return (
-    <span
-      className="block h-8 w-8 rounded-full transition-opacity ease-in"
-      style={{ opacity }}
-    >
-      <IoPlanet size={32} />
+    <span className="relative flex h-9 w-9 items-center justify-center rounded-full border border-amber-gold/40 text-amber-gold animate-orbit-pulse">
+      <IoPlanet size={20} />
+      {tooltip && (
+        <span className="absolute -right-1 -top-1">
+          <Info>{tooltip}</Info>
+        </span>
+      )}
     </span>
   )
 }
