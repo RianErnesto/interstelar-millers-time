@@ -5,6 +5,7 @@ import { cn } from '@/services/utils/className'
 import { EventProvider } from '@/contexts/Event'
 import { MusicProvider } from '@/contexts/Music'
 import BackgroundSwitch from '@/components/organisms/BackgroundSwitch'
+import MusicPlayer from '@/components/molecules/MusicPlayer'
 
 export async function generateStaticParams() {
   return [{ lang: 'en' }, { lang: 'pt' }]
@@ -67,6 +68,7 @@ export default function RootLayout({ children, params }: Props) {
         <div className="h-screen overflow-y-scroll">
           <MusicProvider>
             <EventProvider>{children}</EventProvider>
+            <MusicPlayer />
           </MusicProvider>
         </div>
       </body>

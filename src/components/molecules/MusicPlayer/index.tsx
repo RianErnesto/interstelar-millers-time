@@ -11,10 +11,9 @@ import { FaRepeat } from 'react-icons/fa6'
 import { IoPlanet } from 'react-icons/io5'
 import { cn } from '@/services/utils/className'
 import { useMusic } from '@/contexts/Music'
-import { LangType } from '@/types/lang'
 import { motion } from 'framer-motion'
 
-const MusicPlayer = ({ phrases }: { phrases: LangType }) => {
+const MusicPlayer = () => {
   const {
     playing,
     random,
@@ -29,77 +28,83 @@ const MusicPlayer = ({ phrases }: { phrases: LangType }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 1.1, duration: 0.6 }}
-      className="flex w-full max-w-96 flex-col items-center justify-center gap-3"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.0, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-amber-gold/10 backdrop-blur-2xl"
+      style={{ background: 'rgba(13,17,23,0.85)' }}
     >
-      <div className="flex w-full items-center gap-4">
-        <span className="flex h-20 w-20 flex-1 items-center justify-center rounded-md bg-gray-600">
-          <IoPlanet size={32} />
+      {/* Animated glow line */}
+      <div
+        className="absolute left-0 right-0 top-0 h-0.5 animate-glow-slide"
+        style={{
+          background:
+            'linear-gradient(90deg, transparent 0%, rgba(212,160,74,0) 20%, rgba(212,160,74,0.5) 35%, rgba(212,160,74,0.8) 50%, rgba(212,160,74,0.5) 65%, rgba(212,160,74,0) 80%, transparent 100%)',
+        }}
+      />
+
+      <div className="mx-auto flex max-w-[1280px] items-center gap-5 px-4 py-3 sm:px-8">
+        {/* Album art */}
+        <span
+          className={cn(
+            'flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-amber-gold/20 bg-amber-gold/10 text-amber-gold',
+            playing && 'animate-spin-slow',
+          )}
+        >
+          <IoPlanet size={22} />
         </span>
-        <div className="flex flex-col">
+
+        {/* Track info */}
+        <div className="hidden min-w-0 flex-1 sm:block">
           {playing && (
-            <span className="opacity-70">{phrases.musicPlayerPlaying}</span>
+            <span className="text-[10px] font-medium uppercase tracking-[2px] text-amber-gold/50">
+              Now Playing
+            </span>
           )}
-          <span>
-            {music.author} - {music.name}
-          </span>
+          <p className="truncate text-sm text-white/80">
+            {music.author} — {music.name}
+          </p>
         </div>
-      </div>
-      <div className="relative flex w-full items-center justify-center gap-5 rounded-md bg-gray-600/40 py-2">
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.3, duration: 0.5 }}
-          onClick={() => setRandom(!random)}
-          className={cn(
-            'transition-all hover:opacity-80',
-            random && 'text-purple-600',
-          )}
-        >
-          <FaRandom size={20} />
-        </motion.button>
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.5, duration: 0.5 }}
-          onClick={previousMusic}
-          className="transition-opacity hover:opacity-80"
-        >
-          <FaStepBackward size={20} />
-        </motion.button>
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.7, duration: 0.5 }}
-          onClick={changeMusicStatus}
-          className="mx-2 flex items-center justify-center rounded-full transition-opacity hover:opacity-80"
-        >
-          <span className="absolute inset-0 left-1/2 top-1/2 h-14 w-14 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gray-500 opacity-25"></span>
-          {playing ? <FaPause size={20} /> : <FaPlay size={20} />}
-        </motion.button>
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.9, duration: 0.5 }}
-          onClick={nextMusic}
-          className="transition-opacity hover:opacity-80"
-        >
-          <FaStepForward size={20} />
-        </motion.button>
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 2.1, duration: 0.5 }}
-          onClick={() => setRepeat(!repeat)}
-          className={cn(
-            'transition-all hover:opacity-80',
-            repeat && 'text-purple-600',
-          )}
-        >
-          <FaRepeat size={20} />
-        </motion.button>
+
+        {/* Controls */}
+        <div className="flex flex-1 items-center justify-center gap-2 sm:flex-none">
+          <button
+            onClick={() => setRandom(!random)}
+            className={cn(
+              'flex h-9 w-9 items-center justify-center rounded-full transition-all hover:bg-amber-gold/10 hover:text-amber-gold',
+              random ? 'text-amber-gold' : 'text-white/50',
+            )}
+          >
+            <FaRandom size={16} />
+          </button>
+          <button
+            onClick={previousMusic}
+            className="flex h-9 w-9 items-center justify-center rounded-full text-white/50 transition-all hover:bg-amber-gold/10 hover:text-amber-gold"
+          >
+            <FaStepBackward size={16} />
+          </button>
+          <button
+            onClick={changeMusicStatus}
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-amber-gold/30 text-amber-gold transition-all hover:border-amber-gold hover:shadow-[0_0_16px_rgba(212,160,74,0.2)]"
+          >
+            {playing ? <FaPause size={18} /> : <FaPlay size={18} />}
+          </button>
+          <button
+            onClick={nextMusic}
+            className="flex h-9 w-9 items-center justify-center rounded-full text-white/50 transition-all hover:bg-amber-gold/10 hover:text-amber-gold"
+          >
+            <FaStepForward size={16} />
+          </button>
+          <button
+            onClick={() => setRepeat(!repeat)}
+            className={cn(
+              'flex h-9 w-9 items-center justify-center rounded-full transition-all hover:bg-amber-gold/10 hover:text-amber-gold',
+              repeat ? 'text-amber-gold' : 'text-white/50',
+            )}
+          >
+            <FaRepeat size={16} />
+          </button>
+        </div>
       </div>
     </motion.div>
   )
