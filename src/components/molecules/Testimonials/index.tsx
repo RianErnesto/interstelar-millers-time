@@ -1,13 +1,13 @@
 'use client'
 
 import { IoPlanet } from 'react-icons/io5'
-import Image from 'next/image'
-import InterstelarBanner from 'public/images/interstelar_banner.jpg'
 import { useTestimonials } from '@/hooks/useTestimonials'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MdArrowRight, MdArrowLeft } from 'react-icons/md'
 import { LangType } from '@/types/lang'
 import { Locale } from '@/app/[lang]/i18n'
+import { cn } from '@/services/utils/className'
+
+const DOT_DISPLAY_MAX = 7
 
 const Testimonials = ({
   lang,
@@ -16,60 +16,88 @@ const Testimonials = ({
   phrases: LangType
   lang: Locale
 }) => {
-  const { quote, next, previous } = useTestimonials(lang)
+  const { quote, index, total, goTo } = useTestimonials(lang)
+
+  const dotStart = Math.max(
+    0,
+    Math.min(index - Math.floor(DOT_DISPLAY_MAX / 2), total - DOT_DISPLAY_MAX),
+  )
+  const dots = Array.from(
+    { length: Math.min(DOT_DISPLAY_MAX, total) },
+    (_, i) => dotStart + i,
+  )
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9, duration: 0.6 }}
-        key="main"
-        layout
-        className="relative flex h-fit min-h-80 w-full flex-col justify-center overflow-hidden rounded-lg px-4 py-10 transition-all md:px-10 md:py-16"
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.9, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+      className="relative flex min-h-80 w-full flex-col items-center justify-center overflow-hidden rounded-2xl border border-white/5 px-6 py-12 backdrop-blur-lg md:px-16"
+      style={{ background: 'rgba(13,17,23,0.4)' }}
+    >
+      {/* Title */}
+      <div className="mb-7 flex items-center gap-2.5">
+        <span className="flex h-6 w-6 items-center justify-center rounded bg-amber-gold/15 text-amber-gold">
+          <IoPlanet size={16} />
+        </span>
+        <span className="text-[13px] font-medium uppercase tracking-[3px] text-amber-gold/60">
+          {phrases.testimonialsTitle}
+        </span>
+      </div>
+
+      {/* Decorative quote mark */}
+      <span
+        className="-mb-3 select-none text-7xl leading-none text-amber-gold/20"
+        style={{ fontFamily: 'Georgia, serif' }}
       >
-        <Image
-          fill
-          src={InterstelarBanner}
-          alt="Interstelar Banner"
-          style={{ objectFit: 'cover', objectPosition: 'center' }}
-        />
-        <div className="absolute inset-0 bg-black opacity-70" />
-        <div className="relative z-10 flex items-center gap-4">
-          <span className="flex h-8 w-8 items-center justify-center rounded bg-purple-800">
-            <IoPlanet size={24} />
-          </span>{' '}
-          <span className="text-xl font-semibold md:text-2xl">
-            {phrases.testimonialsTitle}
-          </span>
-        </div>
+        &ldquo;
+      </span>
+
+      {/* Quote with crossfade */}
+      <AnimatePresence mode="wait">
         <motion.p
-          key={'quote'}
-          className="relative z-10 mt-7 text-base font-bold transition-all md:text-lg"
+          key={index}
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.97 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-[700px] text-center text-base font-normal italic leading-relaxed text-white/85 md:text-xl"
         >
-          &quot;
           {quote.quote}
-          &quot;
         </motion.p>
+      </AnimatePresence>
+
+      {/* Author */}
+      <AnimatePresence mode="wait">
         <motion.span
-          key={'author'}
-          className="relative z-10 mt-3 transition-all"
+          key={`author-${index}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="mt-5 flex items-center gap-2.5 text-sm font-medium tracking-[1px] text-amber-gold/60"
         >
+          <span className="inline-block h-px w-6 bg-amber-gold/40" />
           {quote.author}
         </motion.span>
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+      </AnimatePresence>
+
+      {/* Dot navigation */}
+      <div className="mt-7 flex items-center gap-2">
+        {dots.map((dotIndex) => (
           <button
-            onClick={previous}
-            className="transition-colors hover:opacity-80"
-          >
-            <MdArrowLeft size={32} />
-          </button>
-          <button onClick={next} className="transition-colors hover:opacity-80">
-            <MdArrowRight size={32} />
-          </button>
-        </div>
-      </motion.div>
-    </AnimatePresence>
+            key={dotIndex}
+            onClick={() => goTo(dotIndex)}
+            className={cn(
+              'h-1.5 rounded-full transition-all duration-300',
+              dotIndex === index
+                ? 'w-5 bg-amber-gold shadow-[0_0_8px_rgba(212,160,74,0.4)]'
+                : 'w-1.5 bg-white/15 hover:bg-white/30',
+            )}
+          />
+        ))}
+      </div>
+    </motion.div>
   )
 }
 
