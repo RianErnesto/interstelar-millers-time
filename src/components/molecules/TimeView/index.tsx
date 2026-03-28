@@ -68,7 +68,7 @@ const TimeView = ({ phases, lang }: { phases: LangType; lang: Locale }) => {
         {timeUnits.map((unit, i) => (
           <div key={unit.label} className="flex items-center gap-3">
             {i > 0 && (
-              <span className="font-mono text-3xl font-bold text-amber-gold/30 animate-blink sm:text-4xl">
+              <span className="animate-blink font-mono text-3xl font-bold text-amber-gold/30 sm:text-4xl">
                 :
               </span>
             )}

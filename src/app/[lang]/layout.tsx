@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+// eslint-disable-next-line camelcase
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/services/utils/className'

@@ -1,44 +1,28 @@
-import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
-import { render, act } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+import { render } from '@testing-library/react'
 import Tick from '.'
 
 describe('Tick', () => {
-  beforeEach(() => {
-    vi.useFakeTimers()
-  })
-
-  afterEach(() => {
-    vi.useRealTimers()
-  })
-
-  it('renders with initial opacity 0', () => {
+  it('renders the planet icon with orbit-pulse animation', () => {
     const { container } = render(<Tick />)
-    const span = container.querySelector('span')!
+    const span = container.querySelector('span') as HTMLSpanElement
 
     expect(span).toBeInTheDocument()
-    expect(span.style.opacity).toBe('0')
+    expect(span.className).toContain('animate-orbit-pulse')
+    expect(span.className).toContain('text-amber-gold')
   })
 
-  it('toggles opacity every 1.25 seconds', () => {
+  it('renders without tooltip when no tooltip prop', () => {
     const { container } = render(<Tick />)
-    const span = container.querySelector('span')!
+    const infoButtons = container.querySelectorAll('button')
 
-    expect(span.style.opacity).toBe('0')
-
-    act(() => vi.advanceTimersByTime(1250))
-    expect(span.style.opacity).toBe('1')
-
-    act(() => vi.advanceTimersByTime(1250))
-    expect(span.style.opacity).toBe('0')
+    expect(infoButtons.length).toBe(0)
   })
 
-  it('cleans up interval on unmount', () => {
-    const clearIntervalSpy = vi.spyOn(global, 'clearInterval')
-    const { unmount } = render(<Tick />)
+  it('renders with tooltip when tooltip prop is provided', () => {
+    const { container } = render(<Tick tooltip="Test tooltip" />)
+    const infoButton = container.querySelector('button')
 
-    unmount()
-
-    expect(clearIntervalSpy).toHaveBeenCalled()
-    clearIntervalSpy.mockRestore()
+    expect(infoButton).toBeInTheDocument()
   })
 })
