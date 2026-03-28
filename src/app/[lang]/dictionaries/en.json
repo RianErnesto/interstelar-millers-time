@@ -9,5 +9,9 @@
     "resetButton": "Reset",
     "testimonialsTitle": "Interstellar Miller Planet",
     "donation": "Make a contribution",
-    "developedBy": "Developed By"
+    "developedBy": "Developed By",
+    "timeUnitDays": "Days",
+    "timeUnitHours": "Hours",
+    "timeUnitMinutes": "Minutes",
+    "timeUnitSeconds": "Seconds"
 }

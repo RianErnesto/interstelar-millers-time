@@ -10,42 +10,40 @@ import {
 import Image from 'next/image'
 import BrazilFlag from 'public/images/brazil_flag.png'
 import USAFlag from 'public/images/usa_flag.png'
-import Link from 'next/link'
 import { LangType } from '@/types/lang'
+import { Locale } from '@/app/[lang]/i18n'
 import { useRouter } from 'next/navigation'
 
-const LanguageSelector = ({ phrases }: { phrases: LangType }) => {
+const LanguageSelector = ({
+  phrases,
+  lang,
+}: {
+  phrases: LangType
+  lang: Locale
+}) => {
   const router = useRouter()
 
   const onValueChange = (value: string) => {
-    router.push(value)
+    router.push(`/${value}`)
   }
 
   return (
-    <Select onValueChange={onValueChange}>
+    <Select value={lang} onValueChange={onValueChange}>
       <SelectTrigger>
         <SelectValue placeholder={phrases.selectLanguage} />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="en">
-          <Link
-            href="/en"
-            locale="en"
-            className="flex w-full items-center gap-2"
-          >
+          <span className="flex w-full items-center gap-2">
             English
             <Image src={USAFlag} height={12} alt="USA Flag" />
-          </Link>
+          </span>
         </SelectItem>
         <SelectItem value="pt">
-          <Link
-            href="/pt"
-            locale="pt"
-            className="flex w-full items-center gap-2"
-          >
+          <span className="flex w-full items-center gap-2">
             Português (Brasil)
             <Image src={BrazilFlag} height={12} alt="Brazil Flag" />
-          </Link>
+          </span>
         </SelectItem>
       </SelectContent>
     </Select>

@@ -23,7 +23,7 @@ export default async function Home({ params: { lang } }: Props) {
         </div>
         <Testimonials phrases={intl} lang={locale} />
         <div className="mt-8 flex w-full flex-wrap justify-center gap-16 md:justify-between">
-          <Footer phrases={intl} />
+          <Footer phrases={intl} lang={locale} />
         </div>
       </div>
     </main>

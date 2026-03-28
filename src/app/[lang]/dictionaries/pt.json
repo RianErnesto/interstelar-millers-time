@@ -9,5 +9,9 @@
     "resetButton": "Resetar",
     "testimonialsTitle": "Planeta Miller de Interstellar",
     "donation": "Faça uma contribuição",
-    "developedBy": "Desenvolvido por"
+    "developedBy": "Desenvolvido por",
+    "timeUnitDays": "Dias",
+    "timeUnitHours": "Horas",
+    "timeUnitMinutes": "Minutos",
+    "timeUnitSeconds": "Segundos"
 }

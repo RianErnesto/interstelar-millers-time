@@ -10,4 +10,8 @@ export type LangType = {
   testimonialsTitle: string
   donation: string
   developedBy: string
+  timeUnitDays: string
+  timeUnitHours: string
+  timeUnitMinutes: string
+  timeUnitSeconds: string
 }

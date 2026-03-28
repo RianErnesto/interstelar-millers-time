@@ -18,10 +18,10 @@ const TimeView = ({ phases, lang }: { phases: LangType; lang: Locale }) => {
   const { day, month, year } = getSplittedDate(event.date)
 
   const timeUnits = [
-    ...(days > 0 ? [{ value: days, label: 'Days' }] : []),
-    { value: hours, label: 'Hours' },
-    { value: minutes, label: 'Minutes' },
-    { value: seconds, label: 'Seconds' },
+    ...(days > 0 ? [{ value: days, label: phases.timeUnitDays }] : []),
+    { value: hours, label: phases.timeUnitHours },
+    { value: minutes, label: phases.timeUnitMinutes },
+    { value: seconds, label: phases.timeUnitSeconds },
   ]
 
   return (
