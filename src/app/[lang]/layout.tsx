@@ -72,7 +72,7 @@ export default function RootLayout({ children, params }: Props) {
               'radial-gradient(ellipse 80% 50% at 50% 20%, rgba(212,160,74,0.06) 0%, transparent 60%)',
           }}
         />
-        <div className="h-screen overflow-y-scroll">
+        <div className="relative z-10 h-screen w-full overflow-y-scroll">
           <MusicProvider>
             <EventProvider>{children}</EventProvider>
             <MusicPlayer />
