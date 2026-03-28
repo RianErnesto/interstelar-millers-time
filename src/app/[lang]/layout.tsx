@@ -39,7 +39,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children, params }: Props) {
   return (
     <html lang={params.lang}>
-      <body className={cn('bg-void', inter.variable, jetbrainsMono.variable)}>
+      <body
+        className={cn(
+          'overflow-hidden bg-void',
+          inter.variable,
+          jetbrainsMono.variable,
+        )}
+      >
         <BackgroundSwitch />
         <div className="absolute inset-0 bg-black/60" />
         {/* Star particles layer */}
