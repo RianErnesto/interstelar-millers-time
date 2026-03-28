@@ -47,7 +47,7 @@ export default function RootLayout({ children, params }: Props) {
         )}
       >
         <BackgroundSwitch />
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="pointer-events-none absolute inset-0 bg-black/60" />
         {/* Star particles layer */}
         <div
           className="pointer-events-none absolute inset-0 animate-twinkle"

@@ -32,8 +32,8 @@ const Testimonials = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.9, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-      className="relative flex min-h-80 w-full flex-col items-center justify-center overflow-hidden rounded-2xl border border-white/5 px-6 py-12 backdrop-blur-lg md:px-16"
-      style={{ background: 'rgba(13,17,23,0.4)' }}
+      className="relative flex min-h-80 w-full flex-col items-center justify-center overflow-hidden rounded-2xl border border-white/5 px-6 py-12 md:px-16"
+      style={{ background: 'rgba(13,17,23,0.75)' }}
     >
       {/* Title */}
       <div className="mb-7 flex items-center gap-2.5">
