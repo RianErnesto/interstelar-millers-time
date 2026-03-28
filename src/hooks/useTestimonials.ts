@@ -14,6 +14,13 @@ export const useTestimonials = (lang: Locale) => {
     setIndex((prev) => (prev - 1 + total) % total)
   }, [total])
 
+  const goTo = useCallback(
+    (targetIndex: number) => {
+      setIndex(targetIndex % total)
+    },
+    [total],
+  )
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % total)
@@ -23,8 +30,10 @@ export const useTestimonials = (lang: Locale) => {
 
   return {
     index,
+    total,
     next,
     previous,
+    goTo,
     quote: quotes[lang][index],
   }
 }
