@@ -8,6 +8,7 @@ import { MusicProvider } from '@/contexts/Music'
 import BackgroundSwitch from '@/components/organisms/BackgroundSwitch'
 import MusicPlayer from '@/components/molecules/MusicPlayer'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Locale } from './i18n'
 
 const SITE_URL = 'https://interstellar.rianernesto.com.br'
@@ -168,6 +169,7 @@ export default function RootLayout({ children, params }: Props) {
           </MusicProvider>
         </div>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
