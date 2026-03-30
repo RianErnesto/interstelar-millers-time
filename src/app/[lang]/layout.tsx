@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 // eslint-disable-next-line camelcase
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
@@ -33,6 +33,10 @@ const seoContent: Record<
       'interstellar, planeta miller, dilatação temporal, gargantua, buraco negro, tempo gravitacional, christopher nolan, hans zimmer',
     ogLocale: 'pt_BR',
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#D4A04A',
 }
 
 export async function generateStaticParams() {
@@ -95,7 +99,6 @@ export async function generateMetadata({
       apple: '/icons/apple-touch-icon.png',
     },
     manifest: '/manifest.json',
-    themeColor: '#D4A04A',
     robots: {
       index: true,
       follow: true,
