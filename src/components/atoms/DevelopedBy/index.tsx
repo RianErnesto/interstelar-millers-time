@@ -1,5 +1,5 @@
 import { LangType } from '@/types/lang'
-import { FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa'
+import { socials } from '@/constants/socials'
 
 const DevelopedBy = ({ phrases }: { phrases: LangType }) => {
   return (
@@ -11,27 +11,17 @@ const DevelopedBy = ({ phrases }: { phrases: LangType }) => {
         </b>
       </span>
       <div className="flex gap-2">
-        <a
-          href="https://www.instagram.com/leaaorian/"
-          target="_blank"
-          className="rounded-sm transition-colors hover:text-amber-gold focus-visible:text-amber-gold focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-amber-gold"
-        >
-          <FaInstagram size={20} />
-        </a>
-        <a
-          href="https://www.linkedin.com/in/rian-ernesto/"
-          target="_blank"
-          className="rounded-sm transition-colors hover:text-amber-gold focus-visible:text-amber-gold focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-amber-gold"
-        >
-          <FaLinkedin size={20} />
-        </a>
-        <a
-          href="https://github.com/RianErnesto"
-          target="_blank"
-          className="rounded-sm transition-colors hover:text-amber-gold focus-visible:text-amber-gold focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-amber-gold"
-        >
-          <FaGithub size={20} />
-        </a>
+        {socials.map((social) => (
+          <a
+            key={social.name}
+            href={social.href}
+            target="_blank"
+            aria-label={social.name}
+            className="rounded-sm transition-colors hover:text-amber-gold focus-visible:text-amber-gold focus-visible:outline-none focus-visible:outline-1 focus-visible:outline-amber-gold"
+          >
+            {social.icon}
+          </a>
+        ))}
       </div>
     </div>
   )
