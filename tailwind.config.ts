@@ -29,6 +29,9 @@ const config: Config = {
         'spin-slow': 'spin-slow 12s linear infinite',
         twinkle: 'twinkle 8s ease-in-out infinite alternate',
         'glow-slide': 'glow-slide 4s ease-in-out infinite',
+        'fade-in': 'fade-in 0.6s ease-out backwards',
+        'slide-up': 'slide-up 0.8s cubic-bezier(0.25,0.1,0.25,1) backwards',
+        'slide-right': 'slide-right 0.6s cubic-bezier(0.25,0.1,0.25,1) backwards',
       },
       keyframes: {
         blink: {
@@ -57,6 +60,18 @@ const config: Config = {
           '0%': { transform: 'translateX(-20%)' },
           '50%': { transform: 'translateX(20%)' },
           '100%': { transform: 'translateX(-20%)' },
+        },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'slide-right': {
+          '0%': { opacity: '0', transform: 'translateX(20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
         },
       },
     },

@@ -46,7 +46,8 @@ const BackgroundSwitch = () => {
             alt={bg.alt}
             fill
             priority={index === 0}
-            quality={100}
+            {...(index === 0 && { fetchPriority: 'high' as const })}
+            quality={80}
             style={{ objectFit: 'cover' }}
           />
         </motion.div>

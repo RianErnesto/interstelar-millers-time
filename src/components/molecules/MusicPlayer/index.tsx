@@ -11,7 +11,6 @@ import { FaRepeat } from 'react-icons/fa6'
 import { IoPlanet } from 'react-icons/io5'
 import { cn } from '@/services/utils/className'
 import { useMusic } from '@/contexts/Music'
-import { motion } from 'framer-motion'
 
 const MusicPlayer = () => {
   const {
@@ -27,12 +26,9 @@ const MusicPlayer = () => {
   } = useMusic()
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.0, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-amber-gold/10"
-      style={{ background: 'rgba(13,17,23,0.95)' }}
+    <div
+      className="fixed bottom-0 left-0 right-0 z-50 animate-slide-up border-t border-amber-gold/10"
+      style={{ background: 'rgba(13,17,23,0.95)', animationDelay: '1.0s' }}
     >
       {/* Animated glow line */}
       <div
@@ -106,7 +102,7 @@ const MusicPlayer = () => {
           </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 

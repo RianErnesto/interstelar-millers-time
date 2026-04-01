@@ -10,7 +10,6 @@ import {
 } from '@/services/utils/patterns'
 import { useEvent } from '@/contexts/Event'
 import { Locale } from '@/app/[lang]/i18n'
-import { motion } from 'framer-motion'
 
 const TimeView = ({ phases, lang }: { phases: LangType; lang: Locale }) => {
   const { event } = useEvent(lang)
@@ -25,12 +24,9 @@ const TimeView = ({ phases, lang }: { phases: LangType; lang: Locale }) => {
   ]
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-      className="relative flex flex-col items-center justify-center gap-6 overflow-hidden rounded-2xl border border-amber-gold/10 px-6 py-12"
-      style={{ background: 'rgba(13,17,23,0.85)' }}
+    <div
+      className="relative flex animate-slide-up flex-col items-center justify-center gap-6 overflow-hidden rounded-2xl border border-amber-gold/10 px-6 py-12"
+      style={{ background: 'rgba(13,17,23,0.85)', animationDelay: '0.3s' }}
     >
       {/* Radial glow from top */}
       <div
@@ -50,20 +46,14 @@ const TimeView = ({ phases, lang }: { phases: LangType; lang: Locale }) => {
       />
 
       {/* Tick icon with tooltip */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-      >
+      <div className="animate-slide-up" style={{ animationDelay: '0.5s' }}>
         <Tick tooltip={phases.dayOnEarthInfo} />
-      </motion.div>
+      </div>
 
       {/* Time display */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-        className="z-10 flex flex-wrap items-center justify-center gap-3"
+      <div
+        className="z-10 flex animate-slide-up flex-wrap items-center justify-center gap-3"
+        style={{ animationDelay: '0.6s' }}
       >
         {timeUnits.map((unit, i) => (
           <div key={unit.label} className="flex items-center gap-3">
@@ -91,14 +81,12 @@ const TimeView = ({ phases, lang }: { phases: LangType; lang: Locale }) => {
             </div>
           </div>
         ))}
-      </motion.div>
+      </div>
 
       {/* Event text */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-        className="z-10 flex items-center gap-1 text-center text-sm text-white/50"
+      <div
+        className="z-10 flex animate-slide-up items-center gap-1 text-center text-sm text-white/50"
+        style={{ animationDelay: '0.8s' }}
       >
         <span>
           {phases.timeSince}{' '}
@@ -108,8 +96,8 @@ const TimeView = ({ phases, lang }: { phases: LangType; lang: Locale }) => {
           — {formatNumber(day)}/{formatNumber(month)}/{formatNumber(year)}
         </span>
         <Info>{phases.hourOnMillerInfo}</Info>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   )
 }
 

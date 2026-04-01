@@ -11,17 +11,14 @@ import { getSplittedDate, formatNumber } from '@/services/utils/patterns'
 import { useEvent } from '@/contexts/Event'
 import { LangType } from '@/types/lang'
 import Button from '@/components/atoms/Button'
-import { motion } from 'framer-motion'
 
 const EventSelector = ({ phrases }: { phrases: LangType }) => {
   const { changeEvent, event, availableEvents, resetEvent } = useEvent()
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.6, duration: 0.6 }}
-      className="flex w-1/3 min-w-fit gap-2"
+    <div
+      className="flex w-1/3 min-w-fit animate-slide-right gap-2"
+      style={{ animationDelay: '0.6s' }}
     >
       <Button onClick={resetEvent}>{phrases.resetButton}</Button>
       <Select
@@ -43,7 +40,7 @@ const EventSelector = ({ phrases }: { phrases: LangType }) => {
           })}
         </SelectContent>
       </Select>
-    </motion.div>
+    </div>
   )
 }
 

@@ -1,8 +1,13 @@
+import dynamic from 'next/dynamic'
 import EventSelector from '@/components/molecules/EventSelector'
-import Testimonials from '@/components/molecules/Testimonials'
 import TimeView from '@/components/molecules/TimeView'
 import { getDictionary, Locale, sanitizeLocale } from './i18n'
 import Footer from '@/components/organisms/Footer'
+
+const Testimonials = dynamic(
+  () => import('@/components/molecules/Testimonials'),
+  { ssr: false },
+)
 
 const SITE_URL = 'https://interstellar.rianernesto.com.br'
 
